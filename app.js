@@ -8,6 +8,7 @@ const categoryRoutes = require("./routes/categoryRoutes");
 const AppError = require("./utils/AppError");
 const errorHandler = require("./middleware/errorHandler");
 const productRoutes = require("./routes/products");
+const cartRoutes = require("./routes/cart");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(mongoSanitize());
 
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.use((req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
