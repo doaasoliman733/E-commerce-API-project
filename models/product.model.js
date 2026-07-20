@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema(
     description: {
       type: String,
       required: [true, "Product description is required"],
+      trim: true,
     },
     price: {
       type: Number,
@@ -30,15 +31,18 @@ const productSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    inStock: {
-      type: Boolean,
-      default: true,
-    },
   },
   {
     timestamps: true,
   }
 );
+
+productSchema.virtual("inStock").get(function () {
+  return this.stock > 0;
+});
+
+productSchema.set("toJSON", { virtuals: true });
+productSchema.set("toObject", { virtuals: true });
 
 const Product = mongoose.model("Product", productSchema);
 

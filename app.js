@@ -7,6 +7,7 @@ const connectDB = require("./db/connectDB");
 const categoryRoutes = require("./routes/categoryRoutes");
 const AppError = require("./utils/AppError");
 const errorHandler = require("./middleware/errorHandler");
+const productRoutes = require("./routes/products");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(mongoSanitize());
 
 app.use("/api/categories", categoryRoutes);
+app.use("/api/products", productRoutes);
 
 app.use((req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));

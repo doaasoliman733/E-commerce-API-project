@@ -30,7 +30,15 @@ const getCategoryById = asyncHandler(async (req, res) => {
 
 // POST /api/categories
 const createCategory = asyncHandler(async (req, res) => {
-  const category = await Category.create(req.body);
+  const { name, description } = req.body;
+
+  const slug = name.toLowerCase().trim().replace(/\s+/g, "-");
+
+  const category = await Category.create({
+    name,
+    description,
+    slug,
+  });
 
   res.status(201).json({
     status: "success",
@@ -41,6 +49,10 @@ const createCategory = asyncHandler(async (req, res) => {
 
 // PATCH /api/categories/:id
 const updateCategory = asyncHandler(async (req, res) => {
+  if (req.body.name) {
+    req.body.slug = req.body.name.toLowerCase().trim().replace(/\s+/g, "-");
+  }
+
   const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
